@@ -58,7 +58,7 @@ IFS=',' read -ra ARR <<< "$CONFIG_NAMES"
 for ITEM in "${ARR[@]}"
 do
   echo "$ITEM"
-  curl -o $FOLDER_REPO_NAME/$ITEM.json "http://management.$MANAGEMENT_SUBDOMAIN.valorpro.com.br/api/v1/$ITEM.json?application=$REPO_NAME"
+  curl -k -o $FOLDER_REPO_NAME/$ITEM.json "https://management.$MANAGEMENT_SUBDOMAIN.valorpro.com.br/api/v1/$ITEM.json?application=$REPO_NAME"
 done
 
 ls -lha $FOLDER_REPO_NAME/
