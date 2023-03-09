@@ -63,4 +63,6 @@ done
 
 ls -lha $FOLDER_REPO_NAME/
 
-kubectl create configmap "$REPO_NAME-config" --from-file="$FOLDER_REPO_NAME" -dry-run=client -o yaml  -n "$NAMESPACE" | kubectl -n "$NAMESPACE" replace -f -
+#kubectl create configmap "$REPO_NAME-config" --from-file="$FOLDER_REPO_NAME" -dry-run=client -o yaml  -n "$NAMESPACE" | kubectl -n "$NAMESPACE" replace -f -
+kubectl -n "$NAMESPACE" delete configmap --ignore-not-found=true "$REPO_NAME-config" 
+kubectl -n "$NAMESPACE" create configmap "$REPO_NAME-config" --from-file="$FOLDER_REPO_NAME" 
