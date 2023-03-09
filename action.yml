@@ -1,0 +1,38 @@
+name: valor-pro-action-get-config
+description: docker build and push action.
+author: valor-pro 
+branding:
+  icon: 'thumbs-up'
+  color: 'white'
+
+inputs:
+  kube_config:
+    description: 'kube_config'
+    required: true
+  config_names:
+    description: 'list of names of json files to be downloaded separated by commas'
+    required: true
+
+  kube_config_str:
+    description: 'kube_config_str'
+  namespace:
+    description: 'namespace'
+    required: true
+  github_token:
+    description: 'github_token'
+    required: false
+    default: ${{ github.token }}    
+runs:
+  using: "composite"
+  steps:
+    - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
+      shell: bash 
+    - run: script.sh
+      shell: bash
+      env:
+        KUBE_CONFIG: ${{ inputs.kube_config }}    
+        REPO_NAME: ${{ github.event.repository.name }}
+        NAMESPACE: ${{ inputs.namespace }}
+        GITHUB_ACTOR: ${{ github.actor }}
+        GITHUB_TOKEN: ${{ inputs.github_token }}
+        CONFIG_NAMES: ${{ inputs.config_names }}  
