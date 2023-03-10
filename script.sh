@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-set -x 
+#set -x 
 
 echo "${KUBE_CONFIG}" | base64 -d > /tmp/config
 export KUBECONFIG=/tmp/config 
@@ -50,16 +50,30 @@ echo "MANAGEMENT_SUBDOMAIN=$MANAGEMENT_SUBDOMAIN"
 kubectl create namespace "$NAMESPACE" --dry-run=client -o yaml | kubectl apply -f -
 
 
+if  [ ! -z "${VALUES}" ] ; then
+    VALUES=${VALUES// /}  # remove all spaces from the variable
+    VALUES=${VALUES//\.json/}
+    IFS=',' read -ra ARR <<< "$VALUES"
 
-CONFIG_NAMES=${CONFIG_NAMES// /}  # remove all spaces from the variable
-CONFIG_NAMES=${CONFIG_NAMES//\.json/}
-IFS=',' read -ra ARR <<< "$CONFIG_NAMES"
+    for ITEM in "${ARR[@]}"
+    do
+        echo "$ITEM"
+        curl -k -o $FOLDER_REPO_NAME/$ITEM.json "https://management.$MANAGEMENT_SUBDOMAIN.valorpro.com.br/api/v1/$ITEM.json?application=$REPO_NAME"
+    done
+fi
 
-for ITEM in "${ARR[@]}"
-do
-  echo "$ITEM"
-  curl -k -o $FOLDER_REPO_NAME/$ITEM.json "https://management.$MANAGEMENT_SUBDOMAIN.valorpro.com.br/api/v1/$ITEM.json?application=$REPO_NAME"
-done
+
+if  [ ! -z "${RESOURCEINSTANCE}" ] && [ ! -z "${RESOURCEINSTANCE_VALUES}" ] ; then
+    RESOURCEINSTANCE_VALUES=${RESOURCEINSTANCE_VALUES// /}  # remove all spaces from the variable
+    RESOURCEINSTANCE_VALUES=${RESOURCEINSTANCE_VALUES//\.json/}
+    IFS=',' read -ra ARR <<< "$RESOURCEINSTANCE_VALUES"
+
+    for ITEM in "${ARR[@]}"
+    do
+        echo "$ITEM"
+        curl -k -o $FOLDER_REPO_NAME/$ITEM.json "https://management.$MANAGEMENT_SUBDOMAIN.valorpro.com.br/api/v1/$ITEM.json?application=$REPO_NAME&resourceInstance=$RESOURCEINSTANCE"
+    done  
+fi
 
 ls -lha $FOLDER_REPO_NAME/
 

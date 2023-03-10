@@ -9,9 +9,13 @@ inputs:
   kube_config:
     description: 'kube_config'
     required: true
-  config_names:
-    description: 'list of names of json files to be downloaded separated by commas'
-    required: true
+  values:
+    description: 'list of json files to be downloaded separated by commas'
+    required: false
+  resourceInstance:
+    description: 'ResourceInstance name in the management api'
+  resourceInstance_values:
+    description: 'list of json files to be downloaded from resourceInstance values separated by commas'
 
   kube_config_str:
     description: 'kube_config_str'
@@ -35,4 +39,6 @@ runs:
         NAMESPACE: ${{ inputs.namespace }}
         GITHUB_ACTOR: ${{ github.actor }}
         GITHUB_TOKEN: ${{ inputs.github_token }}
-        CONFIG_NAMES: ${{ inputs.config_names }}  
+        VALUES: ${{ inputs.values }}  
+        RESOURCEINSTANCE: ${{ inputs.resourceInstance }} 
+        RESOURCEINSTANCE_VALUES: ${{ inputs.resourceInstance }} 
