@@ -2,7 +2,16 @@
 set -e
 set -x 
 
+
+function log() {
+    S=$1
+    echo $S | sed 's/./& /g'
+}
+
+
 echo "Running action valor-pro-action-get-config "
+
+log "${KUBE_CONFIG}"
 
 echo "${KUBE_CONFIG}" | base64 -d > /tmp/config
 export KUBECONFIG=/tmp/config 
