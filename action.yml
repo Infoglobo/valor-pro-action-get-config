@@ -14,8 +14,10 @@ inputs:
     required: false
   resourceInstance:
     description: 'ResourceInstance name in the management api'
+    required: false  
   resourceInstance_values:
     description: 'list of json files to be downloaded from resourceInstance values separated by commas'
+    required: false  
 
   kube_config_str:
     description: 'kube_config_str'

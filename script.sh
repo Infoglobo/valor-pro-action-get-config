@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
-#set -x 
+set -x 
+
+echo "Running action valor-pro-action-get-config "
 
 echo "${KUBE_CONFIG}" | base64 -d > /tmp/config
 export KUBECONFIG=/tmp/config 
