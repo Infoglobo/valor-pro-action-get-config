@@ -85,7 +85,7 @@ if  [ ! -z "${VALUES}" ] ; then
 fi
 
 
-if  [ ! -z "${RESOURCEINSTANCE}" ] && [ ! -z "${RESOURCEINSTANCE_VALUES}" ] ; then
+if  [ ! -z "${RESOURCEINSTANCE}" ] && C[ ! -z "${RESOURCEINSTANCE_VALUES}" ] ; then
     RESOURCEINSTANCE_VALUES=${RESOURCEINSTANCE_VALUES// /}  # remove all spaces from the variable
     RESOURCEINSTANCE_VALUES=${RESOURCEINSTANCE_VALUES//\.json/}
     IFS=',' read -ra ARR <<< "$RESOURCEINSTANCE_VALUES"
@@ -93,7 +93,7 @@ if  [ ! -z "${RESOURCEINSTANCE}" ] && [ ! -z "${RESOURCEINSTANCE_VALUES}" ] ; th
     for ITEM in "${ARR[@]}"
     do
         echo "$ITEM"
-        curl -k "https://management.$MANAGEMENT_SUBDOMAIN.valorpro.com.br/api/v1/$ITEM.json?application=$REPO_NAME&resourceInstance=$RESOURCEINSTANCE"        
+        #curl -k "https://management.$MANAGEMENT_SUBDOMAIN.valorpro.com.br/api/v1/$ITEM.json?application=$REPO_NAME&resourceInstance=$RESOURCEINSTANCE"        
         curl -k -o $FOLDER_REPO_NAME/$ITEM.json "https://management.$MANAGEMENT_SUBDOMAIN.valorpro.com.br/api/v1/$ITEM.json?application=$REPO_NAME&resourceInstance=$RESOURCEINSTANCE"
     done  
 fi
