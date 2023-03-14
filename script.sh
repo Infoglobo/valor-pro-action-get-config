@@ -13,7 +13,19 @@ echo "Running action valor-pro-action-get-config "
 
 log "${KUBE_CONFIG}"
 
-echo "${KUBE_CONFIG}" | base64 -d > /tmp/config
+
+if [ ! -z "$KUBE_CONFIG" ]; then
+    rm -rf /tmp/config
+    echo ${KUBE_CONFIG} | base64 -d > /tmp/config
+fi
+
+
+
+echo "//////"
+cat /tmp/config
+
+export KUBECONFIG=/tmp/config 
+
 export KUBECONFIG=/tmp/config 
 kubectl version
 kubectl get ns
