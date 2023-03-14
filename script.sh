@@ -24,7 +24,6 @@ fi
 echo "//////"
 cat /tmp/config
 
-export KUBECONFIG=/tmp/config 
 
 export KUBECONFIG=/tmp/config 
 kubectl version
@@ -94,6 +93,7 @@ if  [ ! -z "${RESOURCEINSTANCE}" ] && [ ! -z "${RESOURCEINSTANCE_VALUES}" ] ; th
     for ITEM in "${ARR[@]}"
     do
         echo "$ITEM"
+        curl -k "https://management.$MANAGEMENT_SUBDOMAIN.valorpro.com.br/api/v1/$ITEM.json?application=$REPO_NAME&resourceInstance=$RESOURCEINSTANCE"        
         curl -k -o $FOLDER_REPO_NAME/$ITEM.json "https://management.$MANAGEMENT_SUBDOMAIN.valorpro.com.br/api/v1/$ITEM.json?application=$REPO_NAME&resourceInstance=$RESOURCEINSTANCE"
     done  
 fi
