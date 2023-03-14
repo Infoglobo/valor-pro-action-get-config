@@ -43,4 +43,4 @@ runs:
         GITHUB_TOKEN: ${{ inputs.github_token }}
         VALUES: ${{ inputs.values }}  
         RESOURCEINSTANCE: ${{ inputs.resourceInstance }} 
-        RESOURCEINSTANCE_VALUES: ${{ inputs.resourceInstance }} 
+        RESOURCEINSTANCE_VALUES: ${{ inputs.resourceInstance_values }} 
