@@ -71,8 +71,8 @@ echo "MANAGEMENT_SUBDOMAIN=$MANAGEMENT_SUBDOMAIN"
 
 kubectl create namespace "$NAMESPACE" --dry-run=client -o yaml | kubectl apply -f -
 
-
-if  [ ! -z "${VALUES}" ] ; then
+#if  [ ! -z "${VALUES}" ] ; then
+if  [ -n "${VALUES}" ] ; then
     VALUES=${VALUES// /}  # remove all spaces from the variable
     VALUES=${VALUES//\.json/}
     IFS=',' read -ra ARR <<< "$VALUES"
@@ -80,12 +80,13 @@ if  [ ! -z "${VALUES}" ] ; then
     for ITEM in "${ARR[@]}"
     do
         echo "$ITEM"
-        curl -k -o $FOLDER_REPO_NAME/$ITEM.json "https://management.$MANAGEMENT_SUBDOMAIN.valorpro.com.br/api/v1/$ITEM.json?application=$REPO_NAME"
+        curl -k -o "$FOLDER_REPO_NAME"/"$ITEM".json "https://management.$MANAGEMENT_SUBDOMAIN.valorpro.com.br/api/v1/$ITEM.json?application=$REPO_NAME"
     done
 fi
 
 
-if  [ ! -z "${RESOURCEINSTANCE}" ] && C[ ! -z "${RESOURCEINSTANCE_VALUES}" ] ; then
+#if  [ ! -z "${RESOURCEINSTANCE}" ] && C[ ! -z "${RESOURCEINSTANCE_VALUES}" ] ; then
+if  [ -n "${RESOURCEINSTANCE}" ] && [ -n "${RESOURCEINSTANCE_VALUES}" ] ; then
     RESOURCEINSTANCE_VALUES=${RESOURCEINSTANCE_VALUES// /}  # remove all spaces from the variable
     RESOURCEINSTANCE_VALUES=${RESOURCEINSTANCE_VALUES//\.json/}
     IFS=',' read -ra ARR <<< "$RESOURCEINSTANCE_VALUES"
@@ -94,11 +95,11 @@ if  [ ! -z "${RESOURCEINSTANCE}" ] && C[ ! -z "${RESOURCEINSTANCE_VALUES}" ] ; t
     do
         echo "$ITEM"
         #curl -k "https://management.$MANAGEMENT_SUBDOMAIN.valorpro.com.br/api/v1/$ITEM.json?application=$REPO_NAME&resourceInstance=$RESOURCEINSTANCE"        
-        curl -k -o $FOLDER_REPO_NAME/$ITEM.json "https://management.$MANAGEMENT_SUBDOMAIN.valorpro.com.br/api/v1/$ITEM.json?application=$REPO_NAME&resourceInstance=$RESOURCEINSTANCE"
+        curl -k -o "$FOLDER_REPO_NAME"/"$ITEM".json "https://management.$MANAGEMENT_SUBDOMAIN.valorpro.com.br/api/v1/$ITEM.json?application=$REPO_NAME&resourceInstance=$RESOURCEINSTANCE"
     done  
 fi
 
-ls -lha $FOLDER_REPO_NAME/
+ls -lha "$FOLDER_REPO_NAME"/
 
 #kubectl create configmap "$REPO_NAME-config" --from-file="$FOLDER_REPO_NAME" -dry-run=client -o yaml  -n "$NAMESPACE" | kubectl -n "$NAMESPACE" replace -f -
 kubectl -n "$NAMESPACE" delete configmap --ignore-not-found=true "$REPO_NAME-config" 
